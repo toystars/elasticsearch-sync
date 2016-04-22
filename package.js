@@ -1,6 +1,6 @@
 Package.describe({
   name: 'toystars:elasticsearch-sync',
-  version: '0.0.4',
+  version: '0.0.5',
   // Brief, one-line summary of the package.
   summary: 'ElasticSearch utility wrapper for mongoDB integration and sync',
   // URL to the Git repository containing the source code for this package.
@@ -32,11 +32,4 @@ Package.onUse(function(api) {
 
 
   api.export("ESMongoSync", 'server');
-});
-
-Package.onTest(function(api) {
-  api.use('ecmascript');
-  api.use('tinytest');
-  api.use('toystars:elasticsearch-sync');
-  api.addFiles('elasticsearch-sync-tests.js');
 });
