@@ -106,7 +106,7 @@ let sampleWatcher = {
 
 ## Sample init:
 
-Still confused? Get inspired by this [Sample Setup](SAMPLE.js)
+Still confused? Get inspired by this [Sample Setup](lib/examples/SAMPLE.js)
 
 
 ## Contributing
