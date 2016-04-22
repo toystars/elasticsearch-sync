@@ -1,5 +1,9 @@
 # elasticsearch-sync
-ElasticSearch and MongoDB sync package for Meteor
+ElasticSearch and MongoDB sync package for Meteor.
+
+## What does it do?
+elasticsearch-sync package keeps your mongoDB collections and elastic search cluster in sync. It does so by tailing the mongo oplog and replicate whatever crud operation into elastic search cluster without any overhead.
+Please not that a replica set is needed for the package to tail mongoDB.
 
 
 ## How to use
@@ -46,8 +50,17 @@ watcherArray.push(sampleWatcher);
 
 let batchCount = 500;
 
-ESMongoSync.init(null, null, finalCallBack, watcherArray, batchCount);
+ESMongoSync.init('MONGO_URL', 'ELASTIC_SEARCH_URL', finalCallBack, watcherArray, batchCount);
 
+```
+
+## Using environment variables
+While it is possible to supply mongoDB and elastic search cluster URLs as parameters in the init() method, it is best to define them as environment variables
+MongoDB url should be defined as: process.env.SEARCH_MONGO_URL, while Elastic search cluster url: process.env.SEARCH_ELASTIC_URL
+Supplying the URLs as environments variables, the init method can be called like so:
+
+```javasript
+ESMongoSync.init(null, 'null, finalCallBack, watcherArray, batchCount);
 ```
 
 ## More usage info
@@ -93,7 +106,7 @@ let sampleWatcher = {
 
 ## Sample init:
 
-Still confused? Get inspired by this [Sample SetUp](SAMPLE.js)
+Still confused? Get inspired by this [Sample Setup](SAMPLE.js)
 
 
 ## Contributing
