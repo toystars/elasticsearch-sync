@@ -38,7 +38,7 @@ let sampleWatcher = {
   type: 'users',
   transformFunction: transformFunction,
   fetchExistingDocuments: true,
-  priority: SearchService.generics.indexOf(type) !== -1 ? 0 : 1
+  priority: 0
 };
 
 let watcherArray = [];
