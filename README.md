@@ -96,10 +96,6 @@ let sampleWatcher = {
 Still confused? Get inspired by this [Sample SetUp](SAMPLE.js)
 
 
-## Change log
-
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
-
 ## Contributing
 
 Contributions are **welcome** and will be fully **credited**.
