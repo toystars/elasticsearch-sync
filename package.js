@@ -13,7 +13,8 @@ Package.describe({
 Npm.depends({
   'mongo-oplog': '1.0.1',
   'elasticsearch': '10.0.1',
-  'mongodb': '2.1.16'
+  'mongodb': '2.1.16',
+  'dot-object': '1.4.1'
 });
 
 Package.onUse(function(api) {
