@@ -1,6 +1,6 @@
 Package.describe({
   name: 'toystars:elasticsearch-sync',
-  version: '0.1.0',
+  version: '0.1.1',
   // Brief, one-line summary of the package.
   summary: 'ElasticSearch utility wrapper for mongoDB integration and sync',
   // URL to the Git repository containing the source code for this package.
