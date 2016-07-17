@@ -18,7 +18,7 @@ Add with iron
 $ iron add toystars:elasticsearch-sync
 ```
 
-## Sample usage
+## Sample usage (version <= 0.0.9)
 After adding package to meteor app
 
 ```javascript
@@ -60,7 +60,7 @@ MongoDB url should be defined as: process.env.SEARCH_MONGO_URL, while Elastic se
 Supplying the URLs as environments variables, the init method can be called like so:
 
 ```javasript
-ESMongoSync.init(null, 'null, finalCallBack, watcherArray, batchCount);
+ESMongoSync.init(null, null, finalCallBack, watcherArray, batchCount);
 ```
 
 ## More usage info
@@ -104,9 +104,117 @@ let sampleWatcher = {
 - **priority** - Integer (starts from 0). Useful if certain watcher depends on other watchers. Watchers with lower priorities get processed before watchers with higher priorities.
 
 
+
+## Sample usage (version >= 0.1.0)
+After adding package to meteor app. It is highly recommended that ENV_VARs be used.
+
+```javascript
+
+// initialize package as below
+
+let finalCallBack = () => {
+  // whatever code to run after package init
+  .
+  .
+}
+
+let transformFunction = (watcher, document, callBack) => {
+  document.name = document.firstName + ' ' + document.lastName;
+  callBack(document);
+}
+
+let sampleWatcher = {
+  collectionName: 'users',
+  index: 'person',
+  type: 'users',
+  transformFunction: transformFunction,
+  fetchExistingDocuments: true,
+  priority: 0
+};
+
+let watcherArray = [];
+watcherArray.push(sampleWatcher);
+
+// The following env_vars are to be defined. Error will be thrown if any of the env_var is not defined 
+export MONGO_OPLOG_URL="mongodb://127.0.0.1:27017/local" // mongoDB url where data will be pulled from
+export DATA_MONGO_URL="mongodb://127.0.0.1:27017/meteor" // mongoDB oplog url which is the local DB of replica-set
+export SEARCH_ELASTIC_URL="localhost:9200" // ElasticSearch cluster url
+export BATCH_COUNT = 100; // Number of documents to be indexed in a single batch indexing
+
+
+ESMongoSync.init(null, null, null, finalCallBack, watcherArray, null);
+
+```
+
+
+#### Don't want to use ENV_VARs (not recommended)
+
+```javascript
+
+/*
+ * The init function takes six (6) arguments in all, as follows
+ * 1. MongoDB oplog url
+ * 2. ELasticSearch cluster url
+ * 3. MongoDB data url
+ * 4. callBack function to be called after init function has finished running all checkup. Can be null.
+ * 5. Array of wather objects specifying which mongoDB collections to pull from and keep in sync with ES cluster
+ * 6. Batch count - Number of documents to index as a bulk
+ */
+ 
+ESMongoSync.init("mongodb://127.0.0.1:27017/local", "localhost:9200", "mongodb://127.0.0.1:27017/meteor", finalCallBack, watcherArray, 100);
+
+/* 
+ * It should be noted that the above option should only be used in extreme cases where ENV_VARs can't be deifned or accessed.
+ * It should only be seen as an extreme fall back, so not recommended.
+ */
+
+```
+
+All other configurations are as they were in previous versions.
+
+
+## Extra APIs
+
+#### Reindexing
+
+If you have a cron-job that runs at specific intervals and you need to reindex data from your mongoDB database to ElasticSearch cluster, there is a reIndex function that takes care of fetching the new documents and reindexing in ElasticSearch.
+This can also come in handy if there is an ElasticSearch mappings change and there is a need to reindex data. It should be noted that calling reIndex overwrites previously stored data in ElasticSearch cluster. It also doesn't take into consideration the size of documents to reindex and ElasticSearch cluster specs.
+
+```javascript
+ 
+ESMongoSync.reIndex();
+
+```
+
+
+#### MongoDB and Oplog connection destruction 
+
+If for any reason there is a need to disconnect from MongoDB and MongoDB Oplog, then the `destroy` or `disconnect` functions handle that.
+
+```javascript
+
+// completely destroy both conenctions
+ESMongoSync.destroy();
+
+// only disconnect from MongoOplog.
+ESMongoSync.disconnect();
+
+```
+
+To resume syncing after mongoDB and Oplog connection has been destroyed or stopped,
+
+```javascript
+
+ESMongoSync.resume();
+
+```
+
+will reconnect to Mongo and Oplog and re-enable real time Mongo to ElasticSearch sync.
+
 ## Sample init:
 
 Still confused? Get inspired by this [Sample Setup](lib/examples/SAMPLE.js)
+
 
 
 ## Contributing
