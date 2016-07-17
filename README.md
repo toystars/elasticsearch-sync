@@ -136,8 +136,8 @@ let watcherArray = [];
 watcherArray.push(sampleWatcher);
 
 // The following env_vars are to be defined. Error will be thrown if any of the env_var is not defined 
-export MONGO_OPLOG_URL="mongodb://127.0.0.1:270001/local" // mongoDB url where data will be pulled from
-export DATA_MONGO_URL="mongodb://127.0.0.1:270001/meteor" // mongoDB oplog url which is the local DB of replica-set
+export MONGO_OPLOG_URL="mongodb://127.0.0.1:27017/local" // mongoDB url where data will be pulled from
+export DATA_MONGO_URL="mongodb://127.0.0.1:27017/meteor" // mongoDB oplog url which is the local DB of replica-set
 export SEARCH_ELASTIC_URL="localhost:9200" // ElasticSearch cluster url
 export BATCH_COUNT = 100; // Number of documents to be indexed in a single batch indexing
 
@@ -161,7 +161,7 @@ ESMongoSync.init(null, null, null, finalCallBack, watcherArray, null);
  * 6. Batch count - Number of documents to index as a bulk
  */
  
-ESMongoSync.init("mongodb://127.0.0.1:270001/local", "localhost:9200", "mongodb://127.0.0.1:270001/meteor", finalCallBack, watcherArray, 100);
+ESMongoSync.init("mongodb://127.0.0.1:27017/local", "localhost:9200", "mongodb://127.0.0.1:27017/meteor", finalCallBack, watcherArray, 100);
 
 /* 
  * It should be noted that the above option should only be used in extreme cases where ENV_VARs can't be deifned or accessed.
